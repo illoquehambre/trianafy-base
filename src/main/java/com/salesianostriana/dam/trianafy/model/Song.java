@@ -14,8 +14,7 @@ import javax.persistence.*;
 @Builder
 public class Song {
 
-    @Id
-    @GeneratedValue
+    @Id@GeneratedValue
     private Long id;
 
     private String title;
@@ -27,4 +26,9 @@ public class Song {
     private Artist artist;
 
 
+    public Song(String title, String album, String year) {
+        this.title = title;
+        this.album = album;
+        this.year = year;
+    }
 }
