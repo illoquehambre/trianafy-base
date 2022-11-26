@@ -40,4 +40,9 @@ public class ArtistService {
         repository.deleteById(id);
     }
 
+    //Hacer un buscar por nombre
+    public Artist findByName(String name) {
+        return repository.findArtistByName(name).orElse(null);
+    }
+
 }

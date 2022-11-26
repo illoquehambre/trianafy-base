@@ -58,26 +58,23 @@ public class SongController {
     }
 
     @PostMapping("/song")
-    public  ResponseEntity<Song> createSong(@RequestBody CreateSongDto dto){
+    public  ResponseEntity<SongResponse> createSong(@RequestBody CreateSongDto dto){
         //return ResponseEntity.status(HttpStatus.CREATED).body(service.add(song));
 
-        if (dto.getId()==null) {
+        if (dto.getArtistId() == null) {
             return ResponseEntity.badRequest().build();
         }
 
+        Artist artist = artistService.findById(dto.getArtistId()).orElse(null);
+
         Song nuevo = dtoConverter.createSongDtoToSong(dto);
-
-        Artist artist = artistService.findById(dto.getId()).orElse(null);
-
-        nuevo.setArtist(artist);
-
         //nuevo.setCategoria(categoriaRepository.getById(dto.getCategoriaId()));
-
-        nuevo = service.add(nuevo);
+        nuevo.setArtist(artist);
+        SongResponse result = dtoConverter.songToGetSongDto(service.add(nuevo));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(nuevo);
+                .body(result);
     }
 
     @DeleteMapping("/song/{id}")
@@ -88,13 +85,13 @@ public class SongController {
     }
     @PutMapping("/song/{id}")
     public ResponseEntity<Song> updateSong(@PathVariable Long id,
-                                               @RequestBody Song song){
+                                               @RequestBody CreateSongDto dto){
         return ResponseEntity.of(
                 repo.findById(id).map(old -> {
-                            old.setTitle(song.getTitle());
-                            old.setYear(song.getYear());
-                            old.setAlbum(song.getAlbum());
-                            old.setArtist(song.getArtist());
+                            old.setTitle(dto.getTitle());
+                            old.setYear(dto.getYear());
+                            old.setAlbum(dto.getAlbum());
+                            old.setArtist(artistService.findById(dto.getArtistId()).orElse(null));
                             return Optional.of(service.add(old));
                         })
                         .orElse(Optional.empty())

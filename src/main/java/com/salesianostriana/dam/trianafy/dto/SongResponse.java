@@ -24,6 +24,7 @@ public class SongResponse {
     public static SongResponse of (Song m) {
         return SongResponse
                 .builder()
+                .id(m.getId())
                 .title(m.getTitle())
                 .album(m.getAlbum())
                 .year(m.getYear())

@@ -5,18 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data@AllArgsConstructor@NoArgsConstructor
 public class CreateSongDto {
+    @Id@GeneratedValue
     private Long id;
     private String title;
     private String album;
     @Column(name = "year_of_song")
     private String year;
-    private String artistName;
+    private Long artistId;
 
 
 }
