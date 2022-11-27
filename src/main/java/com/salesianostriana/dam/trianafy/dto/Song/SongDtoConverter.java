@@ -22,6 +22,7 @@ public class SongDtoConverter {
                 .title(m.getTitle())
                 .album(m.getAlbum())
                 .year(m.getYear())
+                .artistName((m.getArtist().getName()))
                 .build();
     }
 }

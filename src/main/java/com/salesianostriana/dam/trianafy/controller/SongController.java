@@ -54,26 +54,26 @@ public class SongController {
     }
 
     @PostMapping("/song")
-    public  ResponseEntity<Song> createSong(@RequestBody CreateSongDto dto){
+    public  ResponseEntity<SongResponse> createSong(@RequestBody CreateSongDto dto){
         //return ResponseEntity.status(HttpStatus.CREATED).body(service.add(song));
 
-        if (dto.getId()==null) {
+        if (dto.getArtistId()==null) {
             return ResponseEntity.badRequest().build();
         }
 
         Song nuevo = dtoConverter.createSongDtoToSong(dto);
 
-        Artist artist = artistService.findById(dto.getId()).orElse(null);
+        Artist artist = artistService.findById(dto.getArtistId()).orElse(null);
 
         nuevo.setArtist(artist);
 
         //nuevo.setCategoria(categoriaRepository.getById(dto.getCategoriaId()));
 
-        nuevo = service.add(nuevo);
+        SongResponse result = dtoConverter.songToGetSongDto(service.add(nuevo));
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(nuevo);
+                .body(result);
     }
 
     @DeleteMapping("/song/{id}")
@@ -83,15 +83,15 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     @PutMapping("/song/{id}")
-    public ResponseEntity<Song> updateSong(@PathVariable Long id,
-                                               @RequestBody Song song){
+    public ResponseEntity<SongResponse> updateSong(@PathVariable Long id,
+                                               @RequestBody CreateSongDto dto){
         return ResponseEntity.of(
-                repo.findById(id).map(old -> {
-                            old.setTitle(song.getTitle());
-                            old.setYear(song.getYear());
-                            old.setAlbum(song.getAlbum());
-                            old.setArtist(song.getArtist());
-                            return Optional.of(service.add(old));
+                service.findById(id).map(old -> {
+                            old.setTitle(dto.getTitle());
+                            old.setYear(dto.getYear());
+                            old.setAlbum(dto.getAlbum());
+                            old.setArtist(artistService.findById(dto.getArtistId()).orElse(null));
+                            return Optional.of(dtoConverter.songToGetSongDto(service.add(old)));
                         })
                         .orElse(Optional.empty())
         );
