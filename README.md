@@ -17,7 +17,7 @@ _Esta entidad está compuesta por su id, el titulo de la canción, el nombre del
 _Esta entidad está compuesta por su id, su nombre, una descripción y una lista de canciones, teniendo está última una relación ManyToMany con Song a través de su id_
 
 ## Controladores
-_Cadda entidad está relacionada con su controlador y su repositorio de tal modo que los endpoints en cada controlador respete la estructura REST_
+_Cada entidad está relacionada con su controlador y su repositorio de tal modo que los endpoints en cada controlador respete la estructura REST_
 
 ## Sugerencia de pruebas 📋
 
@@ -25,12 +25,9 @@ _Las pruebas se realizarán por defecto en el puerto designado (localhost:8080/)
 
 ###### Colecciones json
 
-_Para probar todos los endpoints del proyecto sugerimos importar el archivo.json que hay en la raiz del proyecto con postman_
+_Por defecto se generan algunos datos para realizar pruebas.
 
-_Por defecto se generan algunos datos para realizar pruebas por medio de un InitData, puede comenzar con las peticiones GET para listar todos los artistas, canciones y playlist.
-Esta primera busqueda le servirá para conocer los id de las entidades, de este modo podrá usar las peticiones POST, PUT y DELETE correspondientes a cada entidad._
-
-###### Sugerimos fervientemente prestar atención a los id de las entidades con los métodos GET para poder realizar las peticiones POST,PUT y DELETE correctamente, tal como describimos en el parrafo previo.
+###### Se sugiere prestar atención a los id de las entidades con los métodos GET para poder realizar las peticiones POST,PUT y DELETE correctamente.
 
 ## Documentación con swagger
 _Para acceder a la documentación ejecute el proyecto maven con el plugin boot-boot:run y en su navegador acceda a esta ruta:_
@@ -40,6 +37,6 @@ _Para acceder a la documentación ejecute el proyecto maven con el plugin boot-b
 
 ## Autores ✒️
 
-* **Luis Miguel López Magaña** - *Proyecto Trianafy* - [navalclmlopezmagana](https://github.com/lmlopezmagana)
+* **Luis Miguel López Magaña** - *Proyecto Trianafy-Base* - [navalclmlopezmagana](https://github.com/lmlopezmagana)
 
 * **Ignacio Moreno Gómez** - *Proyecto Trianafy* - [illoquehambre](https://github.com/illoquehambre)
