@@ -37,6 +37,6 @@ _Para acceder a la documentación ejecute el proyecto maven con el plugin boot-b
 
 ## Autores ✒️
 
-* **Luis Miguel López Magaña** - *Proyecto Trianafy-Base* - [navalclmlopezmagana](https://github.com/lmlopezmagana)
+* **Luis Miguel López Magaña** - *Proyecto Trianafy-Base* - [lmlopezmagana](https://github.com/lmlopezmagana)
 
 * **Ignacio Moreno Gómez** - *Proyecto Trianafy* - [illoquehambre](https://github.com/illoquehambre)
