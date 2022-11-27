@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.dto.PlayList.PlayListDtoConverter;
 import com.salesianostriana.dam.trianafy.dto.PlayList.PlayListResponse;
+import com.salesianostriana.dam.trianafy.dto.PlayList.PlayListResponseDetails;
 import com.salesianostriana.dam.trianafy.dto.Song.SongResponse;
 import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PlayListController {
     private final PlaylistRepository repo;
+    private final PlayListDtoConverter dtoConverter;
     private final PlaylistService service;
 
 
@@ -44,8 +47,8 @@ public class PlayListController {
     }
 
     @GetMapping("/list/{id}")
-    public ResponseEntity<Playlist> findPlayListById(@PathVariable Long id){
-        return ResponseEntity.of(service.findById(id));
+    public ResponseEntity<PlayListResponseDetails> findPlayListById(@PathVariable Long id){
+        return ResponseEntity.of(dtoConverter.playListToPlayListResponseDetails(service.findById(id)));
     }
 
     @PostMapping("/list")

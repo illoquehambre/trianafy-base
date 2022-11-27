@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.trianafy.dto.Song;
 
+import com.salesianostriana.dam.trianafy.dto.PlayList.PlayListResponseDetails;
 import com.salesianostriana.dam.trianafy.model.Song;
 import org.springframework.stereotype.Component;
 
@@ -25,4 +26,5 @@ public class SongDtoConverter {
                 .artistName((m.getArtist().getName()))
                 .build();
     }
+
 }
