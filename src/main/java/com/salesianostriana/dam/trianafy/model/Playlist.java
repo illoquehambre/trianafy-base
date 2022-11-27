@@ -37,8 +37,7 @@ public class Playlist {
         songs.remove(song);
     }
 
-    public Playlist(Long id, String name, String description) {
-        this.id = id;
+    public Playlist(String name, String description) {
         this.name = name;
         this.description = description;
     }

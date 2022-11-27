@@ -20,7 +20,6 @@ public class PlayListDtoConverter {
 
     public Playlist createPlayListDtoToPlayList(CreatePlayListDto c) {
         return new Playlist(
-                c.getId(),
                 c.getName(),
                 c.getDescription()
         );
