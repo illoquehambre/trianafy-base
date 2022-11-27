@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.dto.PlayList.PlayListResponse;
+import com.salesianostriana.dam.trianafy.dto.Song.SongResponse;
 import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repos.PlaylistRepository;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -20,28 +23,43 @@ public class PlayListController {
     private final PlaylistService service;
 
 
-    @GetMapping("/playList")
-    public ResponseEntity<List<Playlist>> playListsList(){
-        return ResponseEntity.ok(service.findAll());
+    @GetMapping("/list")
+    public ResponseEntity<List<PlayListResponse>> PlaylistsList(){
+
+        List<Playlist> data = service.findAll();
+
+        if (data.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            List<PlayListResponse> result =
+                    data.stream()
+                            .map(PlayListResponse::of)
+                            .collect(Collectors.toList());
+
+            return ResponseEntity
+                    .ok()
+                    .body(result);
+
+        }
     }
 
-    @GetMapping("/playList/{id}")
+    @GetMapping("/list/{id}")
     public ResponseEntity<Playlist> findPlayListById(@PathVariable Long id){
         return ResponseEntity.of(service.findById(id));
     }
 
-    @PostMapping("/playList")
+    @PostMapping("/list")
     public  ResponseEntity<Playlist> createPlayList(@RequestBody Playlist playList){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.add(playList));
     }
 
-    @DeleteMapping("/playList/{id}")
+    @DeleteMapping("/list/{id}")
     public ResponseEntity<Playlist> deletePlayList(@PathVariable Long id){
         if(repo.existsById(id))
             service.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    @PutMapping("/playList/{id}")
+    @PutMapping("/list/{id}")
     public ResponseEntity<Playlist> updatePlayList(@PathVariable Long id,
                                            @RequestBody Playlist playList){
         return ResponseEntity.of(

@@ -1,16 +1,12 @@
 package com.salesianostriana.dam.trianafy.controller;
 
-import com.salesianostriana.dam.trianafy.dto.CreateSongDto;
-import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
-import com.salesianostriana.dam.trianafy.dto.SongResponse;
+import com.salesianostriana.dam.trianafy.dto.Song.CreateSongDto;
+import com.salesianostriana.dam.trianafy.dto.Song.SongDtoConverter;
+import com.salesianostriana.dam.trianafy.dto.Song.SongResponse;
 import com.salesianostriana.dam.trianafy.model.Artist;
-import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
-import com.salesianostriana.dam.trianafy.repos.ArtistRepository;
-import com.salesianostriana.dam.trianafy.repos.PlaylistRepository;
 import com.salesianostriana.dam.trianafy.repos.SongRepository;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
-import com.salesianostriana.dam.trianafy.service.PlaylistService;
 import com.salesianostriana.dam.trianafy.service.SongService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

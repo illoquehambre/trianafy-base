@@ -1,6 +1,5 @@
-package com.salesianostriana.dam.trianafy.dto;
+package com.salesianostriana.dam.trianafy.dto.Song;
 
-import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +18,7 @@ public class SongDtoConverter {
     public SongResponse songToGetSongDto(Song m) {
         return SongResponse
                 .builder()
+                .id(m.getId())
                 .title(m.getTitle())
                 .album(m.getAlbum())
                 .year(m.getYear())

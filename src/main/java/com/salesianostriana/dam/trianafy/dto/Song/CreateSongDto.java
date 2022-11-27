@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.trianafy.dto;
+package com.salesianostriana.dam.trianafy.dto.Song;
 
 import com.salesianostriana.dam.trianafy.model.Artist;
 import lombok.AllArgsConstructor;
