@@ -40,10 +40,6 @@ _Para acceder a la documentación ejecute el proyecto maven con el plugin boot-b
 
 ## Autores ✒️
 
-* **Manuel Naval** - *Proyecto Trianafy* - [navalcode](https://github.com/navalcode)
+* **Luis Miguel López Magaña** - *Proyecto Trianafy* - [navalclmlopezmagana](https://github.com/lmlopezmagana)
 
-* **Fran Gallego** - *Proyecto Trianafy* - [Gallegogofra21](https://github.com/Gallegogofra21)
-
-* **Alejandro Ramírez** - *Proyecto Trianafy* - [arramos27](https://github.com/arramos270)
-
-
+* **Ignacio Moreno Gómez** - *Proyecto Trianafy* - [illoquehambre](https://github.com/illoquehambre)
