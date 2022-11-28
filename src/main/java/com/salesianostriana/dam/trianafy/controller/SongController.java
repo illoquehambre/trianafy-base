@@ -74,7 +74,6 @@ public class SongController {
                     data.stream()
                             .map(SongResponse::of)
                             .collect(Collectors.toList());
-
             return ResponseEntity
                     .ok()
                     .body(result);

@@ -21,14 +21,14 @@ public class SongResponse {
     private String year;
     private String artistName;
 
-    public static SongResponse of (Song m) {
-        return SongResponse
-                .builder()
-                .id(m.getId())
-                .title(m.getTitle())
-                .album(m.getAlbum())
-                .year(m.getYear())
-                .artistName(m.getArtist().getName())
-                .build();
-    }
+        public static SongResponse of (Song m) {
+            return SongResponse
+                    .builder()
+                    .id(m.getId())
+                    .title(m.getTitle())
+                    .album(m.getAlbum())
+                    .year(m.getYear())
+                    .artistName(m.getArtist().getName())
+                    .build();
+        }
 }
