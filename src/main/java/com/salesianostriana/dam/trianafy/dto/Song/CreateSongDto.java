@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.trianafy.dto;
+package com.salesianostriana.dam.trianafy.dto.Song;
 
 import com.salesianostriana.dam.trianafy.model.Artist;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ public class CreateSongDto {
     private String album;
     @Column(name = "year_of_song")
     private String year;
-    private String artistName;
+    private Long artistId;
 
 
 }
