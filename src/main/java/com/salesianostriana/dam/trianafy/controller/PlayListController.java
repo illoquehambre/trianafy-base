@@ -48,11 +48,11 @@ public class PlayListController {
                             array = @ArraySchema(schema = @Schema(implementation = PlayListResponse.class)),
                             examples = {@ExampleObject(
                                     value = """
-                                            [
-                                                {{"id": 1, "name": "Primera Lista", "numberOfSongs": 4},
-                                                {"id": 2, "name": "Segunda Lista", "numberOfSongs": 7}
-                                            ]                                          
-                                            """
+[
+	{{"id": 1, "name": "Primera Lista", "numberOfSongs": 4},
+	{"id": 2, "name": "Segunda Lista", "numberOfSongs": 7}
+]
+"""
                             )}
                     )}),
             @ApiResponse(responseCode = "404",
@@ -126,21 +126,9 @@ public class PlayListController {
     })
     @PostMapping("/list")
     public  ResponseEntity<CreatePlayListDto> createPlayList(@RequestBody CreatePlayListDto dto){
-        //return ResponseEntity.status(HttpStatus.CREATED).body(service.add(song));
-
-        /*if (dto.getArtistId()==null) {
-            return ResponseEntity.badRequest().build();
-        }*/
 
         Playlist nuevo = dtoConverter.createPlayListDtoToPlayList(dto);
-
-        //Artist artist = artistService.findById(dto.getArtistId()).orElse(null);
-
-        //nuevo.setArtist(artist);
-
-        //nuevo.setCategoria(categoriaRepository.getById(dto.getCategoriaId()));
         service.add(nuevo);
-       //PlayListResponse result = dtoConverter.playListToGetPlayListDto();
        dto.setId(nuevo.getId());
 
         return ResponseEntity
@@ -195,7 +183,7 @@ public class PlayListController {
     public ResponseEntity<PlayListResponse> updatePlayList(@PathVariable Long id,
                                            @RequestBody CreatePlayListDto dto){
         return ResponseEntity.of(
-                repo.findById(id).map(old -> {
+                service.findById(id).map(old -> {
                             old.setName(dto.getName());
                             old.setDescription(dto.getDescription());
                             return Optional.of(dtoConverter.playListToGetPlayListDto(service.add(old)));
@@ -294,7 +282,8 @@ public class PlayListController {
         Optional<Song> song = songService.findById(id2);
 
         if(playlist.isPresent()&&song.isPresent()){
-            service.findById(id1).get().addSong(song.get());
+            playlist.get().addSong(song.get());
+            repo.save(playlist.get());
 
             return ResponseEntity.ok(dtoConverter.playListToPlayListResponseDetails(service.findById(id1)).get());
         }else{
@@ -318,11 +307,29 @@ public class PlayListController {
     @DeleteMapping("/list/{id1}/song/{id2}")
     public  ResponseEntity<?> borrarCancionLista(@PathVariable Long id1,
                                                                        @PathVariable Long id2){
-
+/*
             if(repo.existsById(id1)&&songService.findById(id2).isPresent())
                 service.findById(id1).get().deleteSong(songService.findById(id2).get());
 
+
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            */
+        if(songService.findById(id2).isPresent() && service.findById(id1).get().getSongs().contains(songService.findById(id2).get())) {
+            Song song = songService.findById(id2).get();
+            service.findAll()
+                    .stream()
+                    .filter(playlist -> playlist.getSongs().contains(song)).forEach(playlist -> {
+                        while (playlist.getSongs().contains(song)){
+                            playlist.deleteSong(song);
+                        }
+                        service.edit(playlist);
+                    });
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
+
 
 }

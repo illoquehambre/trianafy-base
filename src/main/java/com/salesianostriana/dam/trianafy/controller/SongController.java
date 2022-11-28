@@ -181,8 +181,11 @@ public class SongController {
                     });
 
             service.delete(song);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 
     @Operation(summary = "Crea una nueva canción")
