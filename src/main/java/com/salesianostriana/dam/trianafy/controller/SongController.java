@@ -42,6 +42,7 @@ public class SongController {
     private final SongService service;
 
 
+
     @Operation(summary = "Obtiene todas las Canciones")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -146,10 +147,34 @@ public class SongController {
                 .body(result);
     }
 
-    @DeleteMapping("/song/{id}") //No funciona
-    public ResponseEntity<Song> deleteSong(@PathVariable Long id){
-        if(repo.existsById(id))
-            service.deleteById(id);
+    @Operation(summary = "Elimina una canción y las borra de las playlist en las que se encuentre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminada la canción ",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = SongResponse.class)),
+                            examples = {@ExampleObject(
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha podido encontrar la canción",
+                    content = @Content),
+    })
+    @DeleteMapping("/song/{id}")
+    public ResponseEntity<?> deleteSong(@PathVariable Long id){
+        if(service.findById(id).isPresent()) {
+            Song song = service.findById(id).get();
+            playlistService.findAll()
+                    .stream()
+                    .filter(playlist -> playlist.getSongs().contains(song)).forEach(playlist -> {
+                        while (playlist.getSongs().contains(song)){
+                            playlist.deleteSong(song);
+                        }
+                        playlistService.edit(playlist);
+                    });
+
+            service.delete(song);
+        }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

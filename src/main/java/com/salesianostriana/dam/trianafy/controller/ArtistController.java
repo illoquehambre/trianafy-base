@@ -1,9 +1,11 @@
 package com.salesianostriana.dam.trianafy.controller;
 
 
+import com.salesianostriana.dam.trianafy.dto.Song.SongResponse;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.repos.ArtistRepository;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
+import com.salesianostriana.dam.trianafy.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +33,7 @@ public class ArtistController {
 
     private final ArtistRepository repo;
     private final ArtistService service;
+    private final SongService songService;
 
 
     @Operation(summary = "Obtiene todos los Artistas")
@@ -115,11 +118,28 @@ public class ArtistController {
     public  ResponseEntity<Artist> createArtist(@RequestBody Artist artist){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.add(artist));
     }
-
+    @Operation(summary = "Elimina un artista y setea a null en las canciones que tiene")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminada la canción ",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Artist.class)),
+                            examples = {@ExampleObject(
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha podido encontrar la canción",
+                    content = @Content),
+    })
     @DeleteMapping("/artist/{id}")
     public ResponseEntity<Artist> deleteArtist(@PathVariable Long id){
         if(repo.existsById(id))
+            songService.findAll().stream().forEach((song -> {
+                if (service.findById(id).get().equals(song.getArtist()))
+                    song.setArtist(null);
+            }));
             service.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     @Operation(summary = "Modifica un Artista ya existente")
