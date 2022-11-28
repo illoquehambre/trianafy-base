@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,10 +71,17 @@ public class SongController {
         if (data.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
+            /*
             List<SongResponse> result =
                     data.stream()
                             .map(SongResponse::of)
                             .collect(Collectors.toList());
+
+             */List<SongResponse> result = new ArrayList<SongResponse>();
+
+            data.stream().forEach(song -> {
+                result.add(dtoConverter.songToGetSongDto(song));
+            });
             return ResponseEntity
                     .ok()
                     .body(result);
