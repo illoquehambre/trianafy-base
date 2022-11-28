@@ -254,4 +254,13 @@ public class PlayListController {
         });*/
     }
 
+    @PostMapping("/list/{id1}/song/{id2}")
+    public ResponseEntity<PlayListResponseDetails> añadirCancionALista(@PathVariable Long id1,
+                                                                       @PathVariable Long id2){
+        Optional<Playlist> playlist = service.findById(id1);
+        Optional<Song> song = songService.findById(id2);
+
+        //hacer un foreach para comparar
+    }
+
 }
