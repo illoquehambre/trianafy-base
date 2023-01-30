@@ -14,7 +14,6 @@ public class CreateSongDto {
     private Long id;
     private String title;
     private String album;
-    @Column(name = "year_of_song")
     private String year;
     private Long artistId;
 

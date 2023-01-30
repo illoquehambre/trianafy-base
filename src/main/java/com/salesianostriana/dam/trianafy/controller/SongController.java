@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianostriana.dam.trianafy.Views;
 import com.salesianostriana.dam.trianafy.dto.PlayList.PlayListResponseDetails;
 import com.salesianostriana.dam.trianafy.dto.Song.CreateSongDto;
 import com.salesianostriana.dam.trianafy.dto.Song.SongDtoConverter;
@@ -63,8 +65,9 @@ public class SongController {
                     description = "No se ha encontrado ninguna canción",
                     content = @Content),
     })
+    @JsonView(Views.ResponseSong.class)
     @GetMapping("/song")
-    public ResponseEntity<List<SongResponse>> songsList(){
+    public ResponseEntity<List<Song>> songsList(){
 
         List<Song> data = service.findAll();
 
@@ -77,14 +80,15 @@ public class SongController {
                             .map(SongResponse::of)
                             .collect(Collectors.toList());
 
-             */List<SongResponse> result = new ArrayList<SongResponse>();
+             *//*List<SongResponse> result = new ArrayList<SongResponse>();
 
             data.stream().forEach(song -> {
                 result.add(dtoConverter.songToGetSongDto(song));
-            });
+            });*/
+                
             return ResponseEntity
                     .ok()
-                    .body(result);
+                    .body(data);
 
         }
     }
@@ -141,7 +145,7 @@ public class SongController {
 
         Song nuevo = dtoConverter.createSongDtoToSong(dto);
 
-        Artist artist = artistService.findById(dto.getArtistId()).orElse(null);
+        Artist artist = artistService.findById(dto.getArtistId());
 
         nuevo.setArtist(artist);
 
@@ -218,7 +222,7 @@ public class SongController {
                             old.setTitle(dto.getTitle());
                             old.setYear(dto.getYear());
                             old.setAlbum(dto.getAlbum());
-                            old.setArtist(artistService.findById(dto.getArtistId()).orElse(null));
+                            old.setArtist(artistService.findById(dto.getArtistId()));
                             return Optional.of(dtoConverter.songToGetSongDto(service.add(old)));
                         })
                         .orElse(Optional.empty())

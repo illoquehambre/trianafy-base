@@ -49,8 +49,8 @@ public class PlayListController {
                             examples = {@ExampleObject(
                                     value = """
 [
-	{{"id": 1, "name": "Primera Lista", "numberOfSongs": 4},
-	{"id": 2, "name": "Segunda Lista", "numberOfSongs": 7}
+    {{"id": 1, "name": "Primera Lista", "numberOfSongs": 4},
+    {"id": 2, "name": "Segunda Lista", "numberOfSongs": 7}
 ]
 """
                             )}

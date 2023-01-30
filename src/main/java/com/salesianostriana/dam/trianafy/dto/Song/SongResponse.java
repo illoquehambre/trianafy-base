@@ -17,7 +17,6 @@ public class SongResponse {
     private Long id;
     private String title;
     private String album;
-    @Column(name = "year_of_song")
     private String year;
     private String artistName;
 
@@ -28,7 +27,7 @@ public class SongResponse {
                     .title(m.getTitle())
                     .album(m.getAlbum())
                     .year(m.getYear())
-                    .artistName(m.getArtist().getName())
+                    .artistName(m.getArtist().getArtistName())
                     .build();
         }
 }

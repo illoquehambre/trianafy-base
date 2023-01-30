@@ -18,9 +18,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
-
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,16 +58,9 @@ public class ArtistController {
                     content = @Content),
     })
     @GetMapping("/artist")
-    public ResponseEntity<List<Artist>> artistsList(){
-        List<Artist> data = service.findAll();
+    public List<Artist> artistsList(){
 
-        if (data.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity
-                    .ok()
-                    .body(data);
-        }
+            return service.findAll();
 
     }
     @Operation(summary = "Obtiene un artista por su id")
@@ -90,8 +85,8 @@ public class ArtistController {
 
 
     @GetMapping("/artist/{id}")
-    public ResponseEntity<Artist> findArtistById(@PathVariable Long id){
-        return ResponseEntity.of(service.findById(id));
+    public Artist findArtistById(@PathVariable Long id){
+        return service.findById(id);
     }
 
     @Operation(summary = "Crea un nuevo Artista")
@@ -115,8 +110,18 @@ public class ArtistController {
     })
 
     @PostMapping("/artist")
-    public  ResponseEntity<Artist> createArtist(@RequestBody Artist artist){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.add(artist));
+    public  ResponseEntity<Artist> createArtist(@Valid @RequestBody Artist artist){
+        Artist created = service.add(artist);
+
+        URI createdURI = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId()).toUri();
+
+
+        return ResponseEntity
+                .created(createdURI)
+                .body(created);
     }
     @Operation(summary = "Elimina un artista y setea a null en las canciones que tiene")
     @ApiResponses(value = {
@@ -133,14 +138,10 @@ public class ArtistController {
     })
     @DeleteMapping("/artist/{id}")
     public ResponseEntity<Artist> deleteArtist(@PathVariable Long id){
-        if(repo.existsById(id))
-            songService.findAll().stream().forEach((song -> {
-                if (service.findById(id).get().equals(song.getArtist()))
-                    song.setArtist(null);
-            }));
-            service.deleteById(id);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        service.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
     @Operation(summary = "Modifica un Artista ya existente")
     @ApiResponses(value = {
@@ -165,15 +166,9 @@ public class ArtistController {
                     content = @Content),
     })
     @PutMapping("/artist/{id}")
-    public ResponseEntity<Artist> updateArtist(@PathVariable Long id,
+    public Artist updateArtist(@PathVariable Long id,
                                                @RequestBody Artist artist){
-        return ResponseEntity.of(
-                repo.findById(id).map(old -> {
-                    old.setName(artist.getName());
-                    return Optional.of(service.add(old));
-                })
-                        .orElse(Optional.empty())
-        );
+        return service.edit(id, artist);
     }
 
 }

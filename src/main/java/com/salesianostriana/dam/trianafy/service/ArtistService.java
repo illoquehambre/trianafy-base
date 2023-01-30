@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.trianafy.service;
 
 
+import com.salesianostriana.dam.trianafy.exception.ArtistNotFoundException;
+import com.salesianostriana.dam.trianafy.exception.EmptyArtistListException;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.repos.ArtistRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +18,6 @@ public class ArtistService {
     private final ArtistRepository repository;
 
 
-    public Artist add(Artist artist) {
-        return repository.save(artist);
-    }
-
-    public Optional<Artist> findById(Long id) {
-        return repository.findById(id);
-    }
-
-    public List<Artist> findAll() {
-        return repository.findAll();
-    }
-
     public Artist edit(Artist artist) {
         return repository.save(artist);
     }
@@ -36,8 +26,49 @@ public class ArtistService {
         repository.delete(artist);
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+
+
+    public List<Artist> findAll() {
+        List<Artist> result = repository.findAll();
+
+        if (result.isEmpty()) {
+            throw new EmptyArtistListException();
+        }
+
+        return result;
+
     }
 
+
+    public Artist findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ArtistNotFoundException(id));
+    }
+
+    public Artist add(Artist Artist) {
+        // En este caso, por ahora, no necesitamos ninguna excepción
+        // más allá del propio mecanismo de validación
+        return repository.save(Artist);
+    }
+
+    public Artist edit(Long id, Artist edited) {
+        return repository.findById(id)
+                .map(Artist -> {
+                    Artist.setArtistName(edited.getArtistName());
+                    return repository.save(Artist);
+                })
+                .orElseThrow(() -> new ArtistNotFoundException());
+    }
+
+
+    public void deleteById(Long id) {
+        // En este caso no queremos usar excepciones, sino directamente
+        // prevenir el posible error
+        if (repository.existsById(id))
+            repository.deleteById(id);
+    }
+
+    public boolean artistExists(String artistname) {
+        return repository.existsByArtistname(artistname);
+    }
 }

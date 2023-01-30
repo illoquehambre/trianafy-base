@@ -1,42 +1,34 @@
-package com.salesianostriana.dam.trianafy.model;
+package com.salesianostriana.dam.trianafy.dto.newSong;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianostriana.dam.trianafy.Views;
+import com.salesianostriana.dam.trianafy.model.Artist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-public class Song {
+public class dto {
 
     @JsonView(Views.PublicSong.class)
-    @Id@GeneratedValue
     private Long id;
     @JsonView(Views.PublicSong.class)
     private String title;
     @JsonView(Views.PublicSong.class)
     private String album;
     @JsonView(Views.PublicSong.class)
-    @Column(name = "year_of_song")
     private String year;
-    @JsonView(Views.DetailSong.class)
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Artist artist;
+    @JsonView(Views.CreateSong.class)
+    private String artistId;
     @JsonView(Views.ResponseSong.class)
     private String artistName;
 
 
-    public Song(String title, String album, String year) {
-        this.title = title;
-        this.album = album;
-        this.year = year;
-    }
+
+
 }
