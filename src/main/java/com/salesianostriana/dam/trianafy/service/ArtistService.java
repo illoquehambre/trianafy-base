@@ -68,7 +68,7 @@ public class ArtistService {
             repository.deleteById(id);
     }
 
-    public boolean artistExists(String artistname) {
-        return repository.existsByArtistname(artistname);
+    public boolean artistExists(String artistName) {
+        return repository.existsByArtistName(artistName);
     }
 }

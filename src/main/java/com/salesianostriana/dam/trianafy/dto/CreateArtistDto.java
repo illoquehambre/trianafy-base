@@ -7,12 +7,12 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class createArtistDto {
+public class CreateArtistDto {
 
     @NotEmpty(message = "{createArtistDto.name.notempty}")
     private String name;
 
-    public static Artist yoArtist(createArtistDto dto) {
+    public static Artist toArtist(CreateArtistDto dto) {
         return Artist.builder()
                 .artistName(dto.getName())
                 .build();
